@@ -1,30 +1,3 @@
-let fetchBtn = document.getElementById("fetchBtn");
-fetchBtn.addEventListener("click", buttonClickHandler);
-
-function buttonClickHandler() {
-    console.log("button clicked");
-
-    const xhr = new XMLHttpRequest();
-
-    // xhr.open("GET", "https://jsonplaceholder.typicode.com/posts/1");
-    xhr.open("POST", "https://dummy.restapiexample.com/api/v1/create");
-    xhr.getResponseHeader("Content-type", "application/json");
-
-    xhr.onprogress = function () {
-        console.log("onProgress.....");
-    };
-    xhr.onload = function () {
-        if (this.status === 200) {
-            console.log(this.responseText);
-        } else {
-            console.log("error: something wrong");
-        }
-    };
-    params = ` {"name":"test23","salary":"123","age":"23"}`;
-    xhr.send(params);
-    console.log("we are done");
-}
-
 let popBtn = document.getElementById("popBtn");
 popBtn.addEventListener("click", pophandler);
 
@@ -74,9 +47,9 @@ function showAlbum() {
     xhr.onload = function () {
         if (this.status === 200) {
             let albums = JSON.parse(this.responseText);
-            
+
             let container = document.querySelector(".details");
-            container.innerHTML = ''; // Clear previous content
+            container.innerHTML = ""; // Clear previous content
 
             albums.slice(0, 3).forEach((album, index) => {
                 let albumDiv = document.createElement("div");
@@ -112,3 +85,33 @@ function showAlbum() {
 
     xhr.send();
 }
+
+let localData = document.getElementById("localData");
+console.log();
+
+localData.addEventListener("click", localDataHandle);
+
+function localDataHandle() {
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'data.json');
+    xhr.onload = function () {
+        if (this.status === 200) {
+            const data = JSON.parse(this.responseText);
+            const tbody = document.getElementById("tbody");
+            tbody.innerHTML = ''; 
+
+            data.forEach(dataObj => {
+                const name = dataObj.name;
+                const email = dataObj.email;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${name}</td><td>${email}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+    };
+    xhr.send();
+}
+
+
